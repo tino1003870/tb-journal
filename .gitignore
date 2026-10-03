@@ -1,4 +1,4 @@
 node_modules/
 *.bak
-*.bak2
+*.before-*
 backup-thunderbird/
