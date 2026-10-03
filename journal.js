@@ -948,6 +948,79 @@ async function saveJournal() {
 }
 
 
+/*
+ * ------------------------------------------------------------
+ * Einstellungen
+ * ------------------------------------------------------------
+ */
+
+function saveSettings() {
+
+    const settings = {
+        caldavUrl: $("caldavUrl").value.trim(),
+        username: $("caldavUsername").value,
+        password: $("caldavPassword").value
+    };
+
+    localStorage.setItem(
+        "tbJournalSettings",
+        JSON.stringify(settings)
+    );
+
+    showResult("Einstellungen gespeichert.");
+
+    log("Einstellungen gespeichert.");
+}
+
+
+function loadSettings() {
+
+    const raw =
+        localStorage.getItem("tbJournalSettings");
+
+    if (!raw) {
+
+        showResult(
+            "Keine gespeicherten Einstellungen gefunden."
+        );
+
+        return;
+    }
+
+    try {
+
+        const settings =
+            JSON.parse(raw);
+
+        $("caldavUrl").value =
+            settings.caldavUrl || "";
+
+        $("caldavUsername").value =
+            settings.username || "";
+
+        $("caldavPassword").value =
+            settings.password || "";
+
+        showResult(
+            "Einstellungen geladen."
+        );
+
+        log("Einstellungen geladen.");
+
+    } catch (error) {
+
+        console.error(
+            "[TB-JOURNAL] SETTINGS ERROR",
+            error
+        );
+
+        showResult(
+            "Fehler beim Laden der Einstellungen."
+        );
+    }
+}
+
+
 async function testConnection() {
 
     const url =
@@ -1035,6 +1108,20 @@ async function testConnection() {
 }
 
 
+$("loadSettingsButton")
+    .addEventListener(
+        "click",
+        loadSettings
+    );
+
+
+$("saveSettingsButton")
+    .addEventListener(
+        "click",
+        saveSettings
+    );
+
+
 $("testConnectionButton")
     .addEventListener(
         "click",
@@ -1042,23 +1129,20 @@ $("testConnectionButton")
     );
 
 
-$("createVJournalButton")
-    .addEventListener(
-        "click",
-        createTestVJournal
-    );
+$("createVJournalButton")?.addEventListener(
+    "click",
+    createTestVJournal
+);
 
-$("loadTestVJournalButton")
-    .addEventListener(
-        "click",
-        loadTestVJournal
-    );
+$("loadTestVJournalButton")?.addEventListener(
+    "click",
+    loadTestVJournal
+);
 
-$("loadVJournalsButton")
-    .addEventListener(
-        "click",
-        loadVJournals
-    );
+$("loadVJournalsButton")?.addEventListener(
+    "click",
+    loadVJournals
+);
 
 $("newJournalButton")
     .addEventListener(

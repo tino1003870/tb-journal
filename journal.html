@@ -52,31 +52,39 @@ value="https://caldav.web.de/begenda/dav/bofhdd@web.de/calendar"
         type="password">
     </label>
 
-    <div class="actions">
+    <div class="connection-actions">
 
-      <button
-        id="testConnectionButton"
-        type="button">
-        Verbindung testen
-      </button>
+      <div class="action-group">
+        <span class="action-group-title">Verbindung</span>
 
-      <button
-        id="createVJournalButton"
-        type="button">
-        Test-VJOURNAL anlegen
-      </button>
+        <button
+          id="testConnectionButton"
+          type="button">
+          Verbindung testen
+        </button>
 
-      <button
-        id="loadTestVJournalButton"
-        type="button">
-        Test-VJOURNAL laden
-      </button>
+        <button
+          id="loadVJournalsButton"
+          type="button">
+          Alle Journale laden
+        </button>
+      </div>
 
-      <button
-        id="loadVJournalsButton"
-        type="button">
-        Alle Journale laden
-      </button>
+      <div class="action-group">
+        <span class="action-group-title">Einstellungen</span>
+
+        <button
+          id="loadSettingsButton"
+          type="button">
+          Load Settings
+        </button>
+
+        <button
+          id="saveSettingsButton"
+          type="button">
+          Save Settings
+        </button>
+      </div>
 
     </div>
 

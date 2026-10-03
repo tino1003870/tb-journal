@@ -1,1000 +1,478 @@
+/* ============================================================
+   TB JOURNAL – Oberfläche
+   ============================================================ */
+
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 html,
 body {
-  margin: 0;
-  padding: 0;
-
-  width: 100%;
-  height: 100%;
-
-  font-family:
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
-
-  background: #f3f3f3;
-  color: #222;
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
 }
 
 body {
-  display: flex;
-  flex-direction: column;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 14px;
+    color: #222;
+    background: #f3f3f3;
 }
 
 
 /* ============================================================
-   TOOLBAR
+   Kopf
    ============================================================ */
 
 .toolbar {
-  height: 52px;
-  min-height: 52px;
+    height: 62px;
+    min-height: 62px;
 
-  display: flex;
-  align-items: center;
-  gap: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-  padding: 5px 12px;
+    background: #2d2d2d;
+    color: white;
 
-  background: #303030;
-  color: white;
-
-  border-bottom: 1px solid #555;
+    border-bottom: 1px solid #1d1d1d;
 }
 
-.title {
-  display: flex;
-  flex-direction: column;
-
-  min-width: 150px;
-
-  margin-right: 6px;
+.toolbar .title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1.15;
 }
 
-.title strong {
-  font-size: 16px;
+.toolbar .title strong {
+    font-size: 18px;
+    font-weight: 650;
 }
 
-.title span {
-  font-size: 11px;
-  opacity: 0.65;
-}
-
-.calendar-control {
-  display: flex;
-  align-items: center;
-
-  gap: 6px;
-
-  font-size: 12px;
-}
-
-select,
-button {
-  height: 30px;
-
-  border: 1px solid #999;
-  border-radius: 4px;
-
-  background: white;
-  color: #222;
-
-  padding: 0 8px;
-
-  font-size: 12px;
-}
-
-button {
-  cursor: pointer;
-}
-
-button:hover {
-  background: #e8e8e8;
-}
-
-button:disabled {
-  opacity: 0.4;
-  cursor: default;
-}
-
-/* ============================================================
-   TOOLBAR-GRUPPEN
-   ============================================================ */
-
-.toolbar-group,
-.time-control,
-.duration-control,
-.zoom-control {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-
-.toolbar-label {
-  font-size: 12px;
-  font-weight: 600;
-  opacity: 0.75;
-  margin-right: 3px;
-  white-space: nowrap;
-}
-
-
-/* Zeit und Dauer etwas kompakter */
-.time-control,
-.duration-control {
-  flex-shrink: 0;
-}
-
-
-/* Buttons innerhalb der Gruppen */
-.toolbar-group button,
-.time-control button,
-.duration-control button,
-.zoom-control button {
-  white-space: nowrap;
-}
-
-
-.toolbar-separator {
-  width: 1px;
-  height: 26px;
-
-  margin: 0 5px;
-
-  background: #666;
-}
-
-.zoom-control {
-  display: flex;
-  align-items: center;
-
-  gap: 3px;
-
-  font-size: 12px;
-}
-
-.zoom-control button {
-  height: 27px;
-}
-
-.zoom-control button.active {
-  background: #d9e7f5;
-  border-color: #7898b5;
-}
-
-#status {
-  margin-left: auto;
-
-  font-size: 11px;
-
-  opacity: 0.7;
+.toolbar .title span {
+    margin-top: 3px;
+    font-size: 11px;
+    color: #bdbdbd;
 }
 
 
 /* ============================================================
-   HAUPTBEREICH
+   Hauptbereich
    ============================================================ */
 
 main {
-  flex: 1;
+    width: min(1180px, calc(100% - 32px));
+    margin: 24px auto 40px auto;
+}
 
-  overflow: auto;
-
-  padding: 12px;
+h2 {
+    margin: 0 0 18px 0;
+    font-size: 24px;
+    font-weight: 600;
 }
 
 
 /* ============================================================
-   GANTT
+   Verbindung
    ============================================================ */
 
-#gantt {
-  width: max-content;
-  min-width: 100%;
+.connection {
+    background: white;
+    border: 1px solid #d0d0d0;
+    border-radius: 8px;
+    padding: 20px;
 
-  background: white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
 
-  border: 1px solid #c8c8c8;
-  border-radius: 4px;
+.connection > label {
+    display: inline-flex;
+    align-items: center;
 
-  overflow: hidden;
+    margin: 0 14px 12px 0;
+    gap: 6px;
+
+    font-weight: 500;
+}
+
+.connection input {
+    height: 32px;
+    padding: 5px 9px;
+
+    border: 1px solid #bdbdbd;
+    border-radius: 4px;
+
+    font: inherit;
+    background: white;
+}
+
+#caldavUrl {
+    width: 370px;
+}
+
+#caldavUsername {
+    width: 180px;
+}
+
+#caldavPassword {
+    width: 180px;
 }
 
 
 /* ============================================================
-   HEADER
+   Buttons
    ============================================================ */
 
-.gantt-header {
-  display: grid;
-
-  grid-template-columns:
-    70px
-    320px
-    auto;
-
-  height: 62px;
-
-  background: #e7e7e7;
-
-  border-bottom: 1px solid #aaa;
-
-  position: sticky;
-  top: 0;
-
-  z-index: 20;
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 7px;
 }
 
-.header-cell {
-  border-right: 1px solid #c7c7c7;
+button {
+    height: 32px;
 
-  display: flex;
-  align-items: center;
+    padding: 5px 12px;
 
-  padding: 8px;
+    border: 1px solid #b8b8b8;
+    border-radius: 5px;
 
-  font-weight: 600;
+    background: #fafafa;
+    color: #222;
+
+    font: inherit;
+    cursor: pointer;
 }
 
-.timeline-header {
-  position: relative;
+button:hover:not(:disabled) {
+    background: #eeeeee;
+}
 
-  overflow: hidden;
+button:active:not(:disabled) {
+    background: #e3e3e3;
+}
 
-  display: block;
-
-  padding: 0;
+button:disabled {
+    color: #aaa;
+    background: #f5f5f5;
+    cursor: default;
 }
 
 
 /* ============================================================
-   ZEITKOPF
+   Entwickler-/Testfunktionen
    ============================================================ */
 
-.month-header {
-  position: absolute;
-
-  top: 0;
-
-  height: 31px;
-
-  padding: 6px 8px;
-
-  border-right: 1px solid #aaa;
-  border-bottom: 1px solid #c5c5c5;
-
-  background: #dedede;
-
-  font-size: 11px;
-  font-weight: 600;
-
-  white-space: nowrap;
-}
-
-.week-header {
-  position: absolute;
-
-  top: 31px;
-
-  height: 30px;
-
-  padding-top: 8px;
-
-  border-right: 1px solid #d0d0d0;
-
-  font-size: 10px;
-
-  text-align: center;
-
-  white-space: nowrap;
+#testConnectionButton,
+#createVJournalButton,
+#loadTestVJournalButton {
+    font-size: 12px;
 }
 
 
 /* ============================================================
-   ZEITBEREICH
+   Ergebnis / Ladeanzeige
    ============================================================ */
 
-.timeline {
-  position: relative;
+#connectionResult {
+    margin: 12px 0 0 0;
 
-  min-height: 48px;
+    max-height: 180px;
+    overflow: auto;
 
-  overflow: hidden;
+    font-size: 12px;
+    white-space: pre-wrap;
 
-  padding: 0 !important;
-
-  background-color: white;
-
-  background-image:
-    linear-gradient(
-      to right,
-      rgba(0, 0, 0, 0.07) 1px,
-      transparent 1px
-    );
-
-  background-size:
-    var(--day-width) 100%;
+    color: #555;
 }
 
-
-/* Wochenenden */
-
-.weekend {
-  position: absolute;
-
-  top: 0;
-  bottom: 0;
-
-  background: rgba(0, 0, 0, 0.035);
-
-  pointer-events: none;
+#connectionResult:empty {
+    display: none;
 }
 
 
 /* ============================================================
-   ZEILEN
+   Neues Journal
    ============================================================ */
 
-.row {
-  display: grid;
-
-  grid-template-columns:
-    70px
-    320px
-    auto;
-
-  min-height: 48px;
-
-  border-bottom: 1px solid #ddd;
+.journal-actions {
+    margin: 18px 0 12px 0;
 }
 
-.row:hover {
-  background: #fafafa;
+#newJournalButton {
+    height: 36px;
+
+    padding: 6px 16px;
+
+    background: #2d2d2d;
+    border-color: #2d2d2d;
+    color: white;
+
+    font-weight: 600;
 }
 
-.row.selected {
-  background: #d8e8f8;
-  box-shadow: inset 4px 0 0 #4a78a8;
-}
-
-.row.root-row {
-  background: #f7f7f7;
-}
-
-.row.root-row:hover {
-  background: #eeeeee;
-}
-
-.cell {
-  border-right: 1px solid #e7e7e7;
-
-  display: flex;
-  align-items: center;
-
-  padding: 6px 8px;
-}
-
-.wbs {
-  color: #666;
-
-  font-family: monospace;
-
-  font-size: 12px;
-}
-
-.task-cell {
-  cursor: pointer;
-
-  position: relative;
-}
-
-.task-content {
-  display: flex;
-
-  align-items: center;
-
-  width: 100%;
-}
-
-.task-title {
-  font-size: 13px;
-}
-
-.root-row .task-title {
-  font-weight: 650;
-}
-
-.child-row .task-title {
-  font-weight: 450;
-}
-
-.task-description {
-  margin-top: 4px;
-  white-space: pre-wrap;
-  line-height: 1.35;
-  font-size: 10px;
-  color: #555;
-}
-
-
-.task-dates {
-  display: block;
-
-  margin-top: 2px;
-
-  font-size: 10px;
-
-  color: #888;
+#newJournalButton:hover {
+    background: #444;
 }
 
 
 /* ============================================================
-   BAUM
+   Journal-Editor
    ============================================================ */
-
-.tree-toggle {
-  width: 20px;
-  min-width: 20px;
-
-  height: 22px;
-
-  border: 0;
-
-  padding: 0;
-
-  background: transparent;
-
-  color: #555;
-
-  font-size: 11px;
-}
-
-.tree-toggle:hover {
-  background: #ddd;
-}
-
-.tree-spacer {
-  width: 20px;
-  min-width: 20px;
-}
-
-
-/* ============================================================
-   GANTT-BALKEN
-   ============================================================ */
-
-.bar {
-  position: absolute;
-
-  top: 12px;
-
-  height: 24px;
-
-  border-radius: 4px;
-
-  background: #5a82aa;
-
-  border: 1px solid #3d6286;
-
-  overflow: hidden;
-
-  white-space: nowrap;
-
-  color: white;
-
-  font-size: 11px;
-
-  padding: 3px 7px;
-
-  cursor: pointer;
-
-  z-index: 5;
-}
-
-.bar:hover {
-  filter: brightness(1.08);
-}
-
-.bar-progress {
-  position: absolute;
-
-  left: 0;
-  top: 0;
-  bottom: 0;
-
-  background: rgba(255, 255, 255, 0.20);
-
-  pointer-events: none;
-}
-
-.bar-label {
-  position: relative;
-
-  z-index: 2;
-}
-
-
-/* ============================================================
-   HEUTE
-   ============================================================ */
-
-.today-line {
-  position: absolute;
-
-  top: 0;
-  bottom: 0;
-
-  width: 2px;
-
-  background: #d33;
-
-  z-index: 12;
-
-  pointer-events: none;
-}
-
-
-/* ============================================================
-   MONATS-/WOCHENGRENZEN
-   ============================================================ */
-
-.month-boundary {
-  position: absolute;
-
-  top: 0;
-  bottom: 0;
-
-  width: 2px;
-
-  background: rgba(0, 0, 0, 0.16);
-
-  pointer-events: none;
-
-  z-index: 2;
-}
-
-
-/* ============================================================
-   LEER / FEHLER
-   ============================================================ */
-
-.empty {
-  padding: 40px;
-
-  text-align: center;
-
-  color: #777;
-}
-
-.error {
-  padding: 30px;
-
-  color: #b00020;
-
-  white-space: pre-wrap;
-}
-
-
-/* ============================================================
-   SUMMARY-BALKEN
-   ============================================================ */
-
-.bar.summary-bar {
-  top: 17px;
-  height: 14px;
-
-  border-radius: 2px;
-
-  background: #555;
-  border: 0;
-
-  padding: 1px 6px;
-
-  font-weight: 600;
-}
-
-.bar.summary-bar::before,
-.bar.summary-bar::after {
-  content: "";
-
-  position: absolute;
-
-  top: 0;
-  bottom: 0;
-
-  width: 4px;
-
-  background: #333;
-}
-
-.bar.summary-bar::before {
-  left: 0;
-}
-
-.bar.summary-bar::after {
-  right: 0;
-}
-
-.bar.summary-bar .bar-progress {
-  background: rgba(255, 255, 255, 0.15);
-}
-
-
-/* ============================================================
-   VTODO-EDITOR
-   ============================================================ */
-
-.todo-editor {
-  margin-top: 12px;
-  border-top: 1px solid #888;
-  padding: 12px 16px;
-}
-
-
-.todo-editor.hidden {
-  display: none;
-}
-
-
-.todo-editor-header {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  margin-bottom: 12px;
-}
-
-
-.todo-editor-header strong {
-  font-size: 14px;
-}
-
-
-#todoEditorTask {
-  opacity: 0.7;
-  font-size: 13px;
-}
-
-
-.todo-editor-body {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  flex-wrap: wrap;
-}
-
-
-.todo-editor-body label {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 13px;
-}
-
-
-#todoTitleInput {
-  width: 260px;
-  box-sizing: border-box;
-}
-
-
-.progress-editor {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-
-#todoProgressInput {
-  width: 180px;
-}
-
-
-#todoProgressValue {
-  min-width: 42px;
-}
-
-
-.todo-editor-actions {
-  display: flex;
-  gap: 6px;
-}
-
-
-/* ============================================================
-   TODO BESCHREIBUNG
-   ============================================================ */
-
-.todo-description-label {
-  display: block;
-  margin-bottom: 4px;
-  font-weight: 600;
-}
-
-
-#todoDescriptionInput {
-  display: block;
-  width: 100%;
-  min-height: 220px;
-  box-sizing: border-box;
-  resize: vertical;
-  font-family: inherit;
-  line-height: 1.4;
-  margin-bottom: 12px;
-}
-
-
-/* ============================================================
-   PROJEKT IMPORT
-   ============================================================ */
-
-#importDialog {
-  width: min(900px, 90vw);
-  max-height: 85vh;
-  box-sizing: border-box;
-  padding: 20px;
-}
-
-#importDialog h2 {
-  margin-top: 0;
-}
-
-#importSummary {
-  margin-bottom: 12px;
-  font-weight: 600;
-}
-
-.import-preview {
-  max-height: 50vh;
-  overflow: auto;
-  border: 1px solid #ccc;
-  background: #fafafa;
-  margin-bottom: 16px;
-}
-
-.import-preview-task {
-  padding: 8px 12px;
-  border-bottom: 1px solid #ddd;
-}
-
-.import-preview-task:last-child {
-  border-bottom: none;
-}
-
-.import-preview-title {
-  font-weight: 600;
-}
-
-.import-preview-meta {
-  font-size: 11px;
-  color: #777;
-  margin-top: 2px;
-}
-
-.import-preview-description {
-  margin-top: 4px;
-  white-space: pre-wrap;
-  color: #555;
-  font-size: 11px;
-}
-
-.import-warning {
-  padding: 10px;
-  border: 1px solid #d8b36a;
-  background: #fff8e6;
-  margin-bottom: 16px;
-}
-
-.import-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-}
-
-
-/* ============================================================
-   TOOLBAR – ZWEI ECHTE ZEILEN
-   ============================================================ */
-
-.toolbar {
-  height: 76px;
-  min-height: 76px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-
-  gap: 2px;
-
-  padding: 4px 12px;
-}
-
-
-.toolbar-row {
-  display: flex;
-  align-items: center;
-
-  gap: 6px;
-
-  min-height: 32px;
-}
-
-
-.toolbar-row-top {
-  flex: 0 0 32px;
-}
-
-
-.toolbar-row-bottom {
-  flex: 0 0 32px;
-}
-
-
-/* Titel */
-.toolbar-row-top .title {
-  min-width: 150px;
-  margin-right: 6px;
-}
-
-
-/* Zweite Zeile */
-.toolbar-row-bottom .toolbar-group,
-.toolbar-row-bottom .time-control,
-.toolbar-row-bottom .duration-control,
-.toolbar-row-bottom .zoom-control {
-  flex-shrink: 0;
-}
-
-
-/* Status ganz nach rechts */
-.toolbar-row-bottom #status {
-  margin-left: auto;
-}
-
-
-/* Trennlinien werden bei zwei echten Zeilen nicht benötigt */
-.toolbar-separator {
-  display: none;
-}
-
-
-/* ============================================================
-   TB JOURNAL
-   ============================================================ */
-
-#journalList {
-  background: white;
-  border: 1px solid #c8c8c8;
-  border-radius: 4px;
-  padding: 12px;
-}
-
-.journal-entry {
-  padding: 10px 12px;
-  border-bottom: 1px solid #ddd;
-}
-
-.journal-entry:last-child {
-  border-bottom: none;
-}
-
-.journal-entry h3 {
-  margin: 0 0 6px 0;
-  font-size: 15px;
-}
-
-.journal-date {
-  font-size: 12px;
-  color: #666;
-  margin-bottom: 6px;
-}
-
-.journal-entry p {
-  margin: 6px 0;
-  white-space: pre-wrap;
-}
-
-.journal-entry small {
-  color: #888;
-  font-size: 10px;
-}
-
-#status.error {
-  color: #d00000;
-}
-
-/* Refresh-Button: kompakt neben der Kalender-Auswahl */
-#refreshButton {
-    display: inline-block !important;
-    width: auto !important;
-    min-width: 0 !important;
-    height: auto !important;
-    padding: 4px 10px !important;
-    margin: 0 0 0 6px !important;
-    white-space: nowrap !important;
-}
-
-/* =========================================================
-   TB Journal - Toolbar
-   ========================================================= */
-
-.toolbar {
-    display: flex !important;
-    align-items: center !important;
-    gap: 6px !important;
-    width: auto !important;
-    height: auto !important;
-    min-height: 32px !important;
-}
-
-.toolbar label {
-    display: inline-flex !important;
-    align-items: center !important;
-    width: auto !important;
-    flex: 0 0 auto !important;
-}
-
-.toolbar select {
-    width: auto !important;
-    flex: 0 0 auto !important;
-}
-
-.toolbar button,
-#refreshButton {
-    display: inline-block !important;
-    box-sizing: border-box !important;
-    flex: 0 0 auto !important;
-    width: auto !important;
-    min-width: 0 !important;
-    max-width: none !important;
-    height: 28px !important;
-    min-height: 28px !important;
-    max-height: 28px !important;
-    padding: 3px 10px !important;
-    margin: 0 !important;
-    line-height: 20px !important;
-    white-space: nowrap !important;
-    overflow: visible !important;
-}
 
 .journal-editor {
-    margin: 20px 0;
-    padding: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background: #fafafa;
+    background: white;
+
+    border: 1px solid #cfcfcf;
+    border-radius: 8px;
+
+    padding: 20px;
+    margin-bottom: 18px;
+
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.journal-editor h2 {
+    font-size: 20px;
+    margin-bottom: 18px;
 }
 
 .journal-editor label {
     display: block;
-    margin-bottom: 12px;
+
+    margin-bottom: 14px;
+
+    font-weight: 500;
 }
 
 .journal-editor input,
 .journal-editor textarea {
     display: block;
+
     width: 100%;
-    box-sizing: border-box;
-    margin-top: 5px;
-    padding: 7px;
-    font-family: inherit;
-    font-size: 14px;
+
+    margin-top: 6px;
+
+    padding: 8px 10px;
+
+    border: 1px solid #bdbdbd;
+    border-radius: 5px;
+
+    background: white;
+
+    font: inherit;
+}
+
+.journal-editor input {
+    height: 36px;
 }
 
 .journal-editor textarea {
+    min-height: 150px;
+
     resize: vertical;
+
+    line-height: 1.45;
 }
+
+#saveJournalButton {
+    background: #2d2d2d;
+    border-color: #2d2d2d;
+    color: white;
+}
+
+#saveJournalButton:hover {
+    background: #444;
+}
+
+
+/* ============================================================
+   Journal-Liste
+   ============================================================ */
+
+#journalList {
+    background: white;
+
+    border: 1px solid #d0d0d0;
+    border-radius: 8px;
+
+    padding: 0;
+
+    overflow: hidden;
+
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+
+/* Such-/Sortierleiste wird von journal-ui.js erzeugt */
+
+#journalControls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 14px;
+
+    background: #f7f7f7;
+    border-bottom: 1px solid #d5d5d5;
+}
+
+#journalSearch {
+    flex: 1;
+
+    min-width: 180px;
+
+    height: 36px;
+
+    padding: 7px 10px;
+
+    border: 1px solid #bdbdbd;
+    border-radius: 5px;
+
+    font: inherit;
+}
+
+
+/* ============================================================
+   Journal-Einträge
+   ============================================================ */
 
 .journal-entry {
-    margin-bottom: 12px;
+    padding: 20px 22px;
+
+    border-bottom: 1px solid #e0e0e0;
 }
 
-.journal-entry-actions {
-    margin-top: 12px;
+.journal-entry:last-child {
+    border-bottom: none;
+}
+
+.journal-entry:hover {
+    background: #fcfcfc;
+}
+
+.journal-entry h3 {
+    margin: 0 0 9px 0;
+
+    font-size: 16px;
+    font-weight: 650;
+}
+
+.journal-entry p {
+    margin: 8px 0;
+
+    line-height: 1.5;
+
+    white-space: pre-wrap;
+}
+
+.journal-date {
+    margin: 8px 0;
+
+    font-size: 13px;
+    color: #666;
+}
+
+.journal-entry small {
+    display: block;
+
+    margin-top: 10px;
+
+    font-size: 10px;
+    color: #999;
+}
+
+.journal-entry button {
+    margin-top: 10px;
+}
+
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+
+@media (max-width: 800px) {
+
+    main {
+        width: calc(100% - 20px);
+        margin-top: 12px;
+    }
+
+    .connection > label {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+
+        margin-right: 0;
+    }
+
+    #caldavUrl,
+    #caldavUsername,
+    #caldavPassword {
+        width: 100%;
+    }
+
+    #journalControls {
+        flex-wrap: wrap;
+    }
+
+    #journalSearch {
+        flex-basis: 100%;
+    }
+}
+
+/* ============================================================
+   Verbindungs-Aktionen
+   ============================================================ */
+
+.connection-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 24px;
+    margin-top: 4px;
+}
+
+.action-group {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    flex-wrap: wrap;
+}
+
+.action-group-title {
+    width: 100%;
+    margin-bottom: 2px;
+
+    font-size: 11px;
+    font-weight: 600;
+    color: #777;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+#loadSettingsButton,
+#saveSettingsButton {
+    font-size: 12px;
+}
+
+@media (max-width: 800px) {
+
+    .connection-actions {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .action-group {
+        width: 100%;
+    }
+
+    .action-group button {
+        flex: 1;
+    }
 }
 
