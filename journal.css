@@ -961,3 +961,40 @@ main {
     white-space: nowrap !important;
     overflow: visible !important;
 }
+
+.journal-editor {
+    margin: 20px 0;
+    padding: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: #fafafa;
+}
+
+.journal-editor label {
+    display: block;
+    margin-bottom: 12px;
+}
+
+.journal-editor input,
+.journal-editor textarea {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 5px;
+    padding: 7px;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.journal-editor textarea {
+    resize: vertical;
+}
+
+.journal-entry {
+    margin-bottom: 12px;
+}
+
+.journal-entry-actions {
+    margin-top: 12px;
+}
+

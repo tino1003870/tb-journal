@@ -72,9 +72,74 @@ value="https://caldav.web.de/begenda/dav/bofhdd@web.de/calendar"
         Test-VJOURNAL laden
       </button>
 
+      <button
+        id="loadVJournalsButton"
+        type="button">
+        Alle Journale laden
+      </button>
+
     </div>
 
     <pre id="connectionResult"></pre>
+
+  </section>
+
+
+
+
+  <div class="actions journal-actions">
+
+    <button
+      id="newJournalButton"
+      type="button">
+      Neues Journal
+    </button>
+
+  </div>
+
+
+  <section class="journal-editor" id="journalEditor" hidden>
+
+    <h2 id="journalEditorHeading">Neues Journal</h2>
+
+    <label>
+      Titel
+      <input
+        id="journalTitle"
+        type="text"
+        placeholder="Titel des Journals">
+    </label>
+
+    <label>
+      Datum
+      <input
+        id="journalDate"
+        type="date">
+    </label>
+
+    <label>
+      Beschreibung
+      <textarea
+        id="journalDescription"
+        rows="6"
+        placeholder="Beschreibung"></textarea>
+    </label>
+
+    <div class="actions">
+
+      <button
+        id="saveJournalButton"
+        type="button">
+        Speichern
+      </button>
+
+      <button
+        id="cancelJournalButton"
+        type="button">
+        Abbrechen
+      </button>
+
+    </div>
 
   </section>
 
@@ -89,6 +154,7 @@ value="https://caldav.web.de/begenda/dav/bofhdd@web.de/calendar"
 
 
 <script type="module" src="journal.js"></script>
+<script src="journal-ui.js"></script>
 
 </body>
 </html>
