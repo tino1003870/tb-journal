@@ -62,7 +62,7 @@ options.body = body || "";
 
     <c:filter>
         <c:comp-filter name="VCALENDAR">
-            <c:comp-filter name="VJOURNAL"/>
+            <c:comp-filter name="VTODO"/>
         </c:comp-filter>
     </c:filter>
 
@@ -187,7 +187,7 @@ function parseCalDavReport(xmlText) {
             calendarDataElement.textContent || "";
 
         const todo =
-            parseVJournal(calendarData);
+            parseVTodo(calendarData);
 
         if (!todo) {
             continue;
@@ -207,23 +207,23 @@ function parseCalDavReport(xmlText) {
 
 
 /**
- * Parse one iCalendar VCALENDAR containing a VJOURNAL.
+ * Parse one iCalendar VCALENDAR containing a VTODO.
  */
-function parseVJournal(calendarText) {
+function parseVTodo(calendarText) {
 
     const lines =
         unfoldIcsLines(calendarText);
 
     const start =
         lines.findIndex(
-            line => line === "BEGIN:VJOURNAL"
+            line => line === "BEGIN:VTODO"
         );
 
     const end =
         lines.findIndex(
             (line, index) =>
                 index > start &&
-                line === "END:VJOURNAL"
+                line === "END:VTODO"
         );
 
     if (start < 0 || end < 0) {
@@ -323,7 +323,7 @@ function parseVJournal(calendarText) {
     }
 
     console.log(
-        "[TB-JOURNAL DEBUG] PARSED VJOURNAL",
+        "[TB-PLANNER DEBUG] PARSED VTODO",
         "SUMMARY=" + (todo.summary || ""),
         "DTSTART=" + (todo.dtstart || ""),
         "DTSTART-PARAMS=" + (todo.dtstartParameters || ""),

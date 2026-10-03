@@ -66,12 +66,6 @@ value="https://caldav.web.de/begenda/dav/bofhdd@web.de/calendar"
         Test-VJOURNAL anlegen
       </button>
 
-      <button
-        id="loadTestVJournalButton"
-        type="button">
-        Test-VJOURNAL laden
-      </button>
-
     </div>
 
     <pre id="connectionResult"></pre>

@@ -1,0 +1,41 @@
+[
+  {
+    "namespace": "tbJournalCalendar",
+    "functions": [
+      {
+        "name": "ping",
+        "type": "function",
+        "async": true,
+        "parameters": []
+      },
+      {
+        "name": "listCalendars",
+        "type": "function",
+        "async": true,
+        "parameters": []
+      },
+      {
+        "name": "createJournal",
+        "type": "function",
+        "async": true,
+        "parameters": [
+          {
+            "name": "calendarId",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "name": "listJournals",
+        "type": "function",
+        "async": true,
+        "parameters": [
+          {
+            "name": "calendarId",
+            "type": "string"
+          }
+        ]
+      }
+    ]
+  }
+]

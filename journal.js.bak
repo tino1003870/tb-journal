@@ -115,97 +115,6 @@ function showResult(text) {
         text;
 }
 
-
-function parseVJournal(ical) {
-
-    const getValue = name => {
-
-        const re =
-            new RegExp(
-                "^" + name + "(?:;[^:]*)?:(.*)$",
-                "mi"
-            );
-
-        const match =
-            ical.match(re);
-
-        return match
-            ? match[1].trim()
-            : "";
-    };
-
-
-    return {
-
-        uid:
-            getValue("UID"),
-
-        summary:
-            getValue("SUMMARY"),
-
-        description:
-            getValue("DESCRIPTION"),
-
-        dtstart:
-            getValue("DTSTART")
-    };
-}
-
-
-function displayJournal(journal) {
-
-    const container =
-        $("journalList");
-
-    container.innerHTML = "";
-
-
-    const article =
-        document.createElement("article");
-
-    article.className =
-        "journal-entry";
-
-
-    const title =
-        document.createElement("h3");
-
-    title.textContent =
-        journal.summary || "(ohne Betreff)";
-
-
-    const description =
-        document.createElement("p");
-
-    description.textContent =
-        journal.description || "";
-
-
-    const date =
-        document.createElement("p");
-
-    date.textContent =
-        journal.dtstart
-            ? `Datum: ${journal.dtstart}`
-            : "Kein Datum";
-
-
-    const uid =
-        document.createElement("small");
-
-    uid.textContent =
-        `UID: ${journal.uid || "(keine UID)"}`;
-
-
-    article.appendChild(title);
-    article.appendChild(description);
-    article.appendChild(date);
-    article.appendChild(uid);
-
-    container.appendChild(article);
-}
-
-
 async function loadTestVJournal() {
 
     const baseUrl =
@@ -270,21 +179,6 @@ async function loadTestVJournal() {
                 result.body || "(keine Antwort)"
             ].join("\n")
         );
-
-
-        if (result.ok && result.body) {
-
-            const journal =
-                parseVJournal(result.body);
-
-            log(
-                "Geparstes VJOURNAL:",
-                journal
-            );
-
-            displayJournal(journal);
-        }
-
 
     } catch (error) {
 

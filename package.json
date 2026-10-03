@@ -1,7 +1,7 @@
 {
-  "name": "tb-planner-js",
-  "version": "0.1.0",
-  "description": "TB Planner JS",
+  "name": "tb-journal",
+  "version": "0.2.0",
+  "description": "TB Journal – CalDAV VJOURNAL client",
   "main": "electron/main.js",
   "scripts": {
     "start": "electron .",
@@ -12,8 +12,8 @@
     "electron-builder": "^26.15.3"
   },
   "build": {
-    "appId": "de.optocon.tbplanner",
-    "productName": "TB Planner",
+    "appId": "de.optocon.tbjournal",
+    "productName": "TB Journal",
     "linux": {
       "target": [
         "AppImage"

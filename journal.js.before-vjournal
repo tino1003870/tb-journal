@@ -1,0 +1,122 @@
+import {
+    executeCalDavRequest
+} from "./src/js/caldav.js";
+
+
+const $ = id =>
+    document.getElementById(id);
+
+
+function log(...args) {
+
+    console.log(
+        "[TB-JOURNAL]",
+        ...args
+    );
+}
+
+
+function showResult(text) {
+
+    $("connectionResult").textContent =
+        text;
+}
+
+
+async function testConnection() {
+
+    const url =
+        $("caldavUrl").value.trim();
+
+    const username =
+        $("caldavUsername").value;
+
+    const password =
+        $("caldavPassword").value;
+
+
+    if (!url) {
+
+        showResult(
+            "Bitte eine CalDAV-URL eingeben."
+        );
+
+        return;
+    }
+
+
+    log(
+        "=== CALDAV VERBINDUNG TESTEN ==="
+    );
+
+    log(
+        "URL:",
+        url
+    );
+
+
+    showResult(
+        "Verbindung wird getestet ..."
+    );
+
+
+    try {
+
+        const result =
+            await executeCalDavRequest({
+
+                operation: "PROPFIND",
+
+                url,
+
+                username,
+
+                password
+            });
+
+        console.log(
+            "[TB-JOURNAL] FULL CALDAV RESPONSE:",
+            result.body
+        );
+
+
+        log(
+            "CalDAV Ergebnis:",
+            result
+        );
+
+
+        showResult(
+            [
+                `HTTP ${result.status} ${result.statusText}`,
+                "",
+                result.body || "(keine Antwort)"
+            ].join("\n")
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "[TB-JOURNAL] CALDAV ERROR",
+            error
+        );
+
+
+        showResult(
+            `Fehler: ${error.message}`
+        );
+    }
+}
+
+
+$("testConnectionButton")
+    .addEventListener(
+        "click",
+        testConnection
+    );
+
+
+log(
+    "TB Journal Electron geladen."
+);
