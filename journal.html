@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>TB Journal</title>
+
+  <link rel="stylesheet" href="journal.css">
+</head>
+
+<body>
+
+<header class="toolbar">
+
+  <div class="title">
+    <strong>TB Journal</strong>
+    <span>VJOURNAL</span>
+  </div>
+
+  <label class="calendar-control">
+    Kalender:
+    <select id="calendarSelect"></select>
+  </label>
+
+  <button
+    id="refreshButton"
+    type="button">
+    Kalender neu laden
+  </button>
+
+  <button
+    id="createJournalButton"
+    type="button">
+    Journal anlegen
+  </button>
+
+  <span id="status"></span>
+
+</header>
+
+
+<main>
+
+  <section id="journalList">
+    <p>Noch keine Journale geladen.</p>
+  </section>
+
+</main>
+
+
+<script type="module" src="journal.js"></script>
+
+</body>
+</html>

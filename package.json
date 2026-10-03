@@ -1,0 +1,24 @@
+{
+  "name": "tb-planner-js",
+  "version": "0.1.0",
+  "description": "TB Planner JS",
+  "main": "electron/main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --linux AppImage"
+  },
+  "devDependencies": {
+    "electron": "^44.4.5",
+    "electron-builder": "^26.15.3"
+  },
+  "build": {
+    "appId": "de.optocon.tbplanner",
+    "productName": "TB Planner",
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "Office"
+    }
+  }
+}
