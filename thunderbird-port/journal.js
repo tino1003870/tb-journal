@@ -1,6 +1,92 @@
 import { executeCalDavRequest } from "./src/js/caldav.js";
+import {
+    getAllJournals,
+    saveJournal as saveLocalJournal
+} from "./src/js/journal-store.js";
 const $ = id =>
     document.getElementById(id);
+
+
+/* ============================================================
+   Synchronisationsstatus
+   ============================================================ */
+
+function getSyncStatus(uid) {
+    if (!uid) {
+        return "server";
+    }
+
+    const raw =
+        localStorage.getItem("tbJournalSyncStatus");
+
+    if (!raw) {
+        return "server";
+    }
+
+    try {
+        const status = JSON.parse(raw);
+        return status[uid] || "server";
+    } catch {
+        return "server";
+    }
+}
+
+
+function setSyncStatus(uid, status) {
+    if (!uid) {
+        return;
+    }
+
+    let data = {};
+
+    try {
+        data = JSON.parse(
+            localStorage.getItem("tbJournalSyncStatus") || "{}"
+        );
+    } catch {
+        data = {};
+    }
+
+    data[uid] = status;
+
+    localStorage.setItem(
+        "tbJournalSyncStatus",
+        JSON.stringify(data)
+    );
+}
+
+
+function getSyncStatusInfo(uid) {
+    const status =
+        getSyncStatus(uid);
+
+    switch (status) {
+
+        case "synced":
+            return {
+                text: "🟢 Lokal + Server",
+                className: "sync-status sync-status-synced"
+            };
+
+        case "local":
+            return {
+                text: "🔵 Nur lokal",
+                className: "sync-status sync-status-local"
+            };
+
+        case "dirty":
+            return {
+                text: "🟠 Lokal geändert",
+                className: "sync-status sync-status-dirty"
+            };
+
+        default:
+            return {
+                text: "⚪ Nur Server",
+                className: "sync-status sync-status-server"
+            };
+    }
+}
 
 
 function log(...args) {
@@ -538,6 +624,19 @@ function displayJournals(journals) {
                 "journal-entry";
 
 
+            const syncInfo =
+                getSyncStatusInfo(journal.uid);
+
+            const syncStatus =
+                document.createElement("div");
+
+            syncStatus.className =
+                syncInfo.className;
+
+            syncStatus.textContent =
+                syncInfo.text;
+
+
             const title =
                 document.createElement("h3");
 
@@ -599,6 +698,7 @@ function displayJournals(journals) {
             );
 
 
+            article.appendChild(syncStatus);
             article.appendChild(title);
             article.appendChild(description);
             article.appendChild(date);
@@ -624,6 +724,231 @@ async function loadVJournals() {
     showResult(
         `${journals.length} VJOURNAL-Einträge geladen.`
     );
+}
+
+
+/*
+ * ------------------------------------------------------------
+ * Manuelle Synchronisation
+ * ------------------------------------------------------------
+ */
+
+function setSyncButtonsDisabled(disabled) {
+    const serverToLocal =
+        $("syncServerToLocalButton");
+
+    const localToServer =
+        $("syncLocalToServerButton");
+
+    if (serverToLocal) {
+        serverToLocal.disabled = disabled;
+    }
+
+    if (localToServer) {
+        localToServer.disabled = disabled;
+    }
+}
+
+
+async function syncServerToLocal() {
+
+    const baseUrl =
+        $("caldavUrl").value.trim();
+
+    const username =
+        $("caldavUsername").value;
+
+    const password =
+        $("caldavPassword").value;
+
+    if (!baseUrl) {
+        showResult("Bitte eine CalDAV-URL eingeben.");
+        return;
+    }
+
+    setSyncButtonsDisabled(true);
+    showResult("Sync läuft: Server → Lokal ...");
+
+    log("=== SYNC SERVER → LOKAL START ===");
+
+    try {
+
+        const journals =
+            await listVJournals();
+
+        for (const journal of journals) {
+
+            await saveLocalJournal(journal);
+
+            setSyncStatus(
+                journal.uid,
+                "synced"
+            );
+        }
+
+        displayJournals(journals);
+
+        showResult(
+            `Sync fertig. ${journals.length} Journale vom Server lokal gespeichert.`
+        );
+
+        log(
+            "=== SYNC SERVER → LOKAL FERTIG ===",
+            journals.length
+        );
+
+    } catch (error) {
+
+        console.error(
+            "[TB-JOURNAL] SYNC SERVER → LOKAL ERROR",
+            error
+        );
+
+        showResult(
+            `Sync-Fehler: ${error.message}`
+        );
+
+    } finally {
+
+        setSyncButtonsDisabled(false);
+    }
+}
+
+
+async function syncLocalToServer() {
+
+    const baseUrl =
+        $("caldavUrl").value.trim();
+
+    const username =
+        $("caldavUsername").value;
+
+    const password =
+        $("caldavPassword").value;
+
+    if (!baseUrl) {
+        showResult("Bitte eine CalDAV-URL eingeben.");
+        return;
+    }
+
+    setSyncButtonsDisabled(true);
+    showResult("Sync läuft: Lokal → Server ...");
+
+    log("=== SYNC LOKAL → SERVER START ===");
+
+    try {
+
+        const journals =
+            await getAllJournals();
+
+        let count = 0;
+
+        for (const journal of journals) {
+
+            const uid =
+                journal.uid;
+
+            if (!uid) {
+                continue;
+            }
+
+            const url =
+                journal.url ||
+                baseUrl.replace(/\/+$/, "") +
+                "/" +
+                uid +
+                ".ics";
+
+            let ical =
+                journal.ical;
+
+            if (!ical) {
+
+                const escapeIcal =
+                    value =>
+                        String(value || "")
+                            .replace(/\\/g, "\\\\")
+                            .replace(/;/g, "\\;")
+                            .replace(/,/g, "\\,")
+                            .replace(/\r?\n/g, "\\n");
+
+                const dtstart =
+                    String(journal.dtstart || "")
+                        .replace(/-/g, "");
+
+                const now =
+                    new Date()
+                        .toISOString()
+                        .replace(/[-:]/g, "")
+                        .replace(/\.\d{3}Z$/, "Z");
+
+                ical = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//TB-JOURNAL//EN
+BEGIN:VJOURNAL
+UID:${escapeIcal(uid)}
+DTSTAMP:${now}
+SUMMARY:${escapeIcal(journal.summary)}
+DESCRIPTION:${escapeIcal(journal.description)}
+DTSTART;VALUE=DATE:${dtstart}
+END:VJOURNAL
+END:VCALENDAR
+`;
+            }
+
+            const result =
+                await executeCalDavRequest({
+
+                    operation: "PUT",
+
+                    url,
+
+                    username,
+
+                    password,
+
+                    body: ical
+                });
+
+            if (!result.ok) {
+
+                throw new Error(
+                    `PUT ${url} fehlgeschlagen: HTTP ${result.status}`
+                );
+            }
+
+            setSyncStatus(
+                journal.uid,
+                "synced"
+            );
+
+            count++;
+        }
+
+        showResult(
+            `Sync fertig. ${count} lokale Journale zum Server übertragen.`
+        );
+
+        log(
+            "=== SYNC LOKAL → SERVER FERTIG ===",
+            count
+        );
+
+    } catch (error) {
+
+        console.error(
+            "[TB-JOURNAL] SYNC LOKAL → SERVER ERROR",
+            error
+        );
+
+        showResult(
+            `Sync-Fehler: ${error.message}`
+        );
+
+    } finally {
+
+        setSyncButtonsDisabled(false);
+    }
 }
 
 
@@ -1138,6 +1463,17 @@ $("loadTestVJournalButton")?.addEventListener(
 $("loadVJournalsButton")?.addEventListener(
     "click",
     loadVJournals
+);
+
+
+$("syncServerToLocalButton")?.addEventListener(
+    "click",
+    syncServerToLocal
+);
+
+$("syncLocalToServerButton")?.addEventListener(
+    "click",
+    syncLocalToServer
 );
 
 $("newJournalButton")

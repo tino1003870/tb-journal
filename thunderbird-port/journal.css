@@ -173,6 +173,12 @@ button:disabled {
 }
 
 
+#syncServerToLocalButton,
+#syncLocalToServerButton {
+    font-weight: 600;
+}
+
+
 /* ============================================================
    Ergebnis / Ladeanzeige
    ============================================================ */
@@ -476,3 +482,40 @@ button:disabled {
     }
 }
 
+
+/* ============================================================
+   Synchronisationsstatus
+   ============================================================ */
+
+.sync-status {
+    display: inline-block;
+    margin-bottom: 6px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.sync-status-synced {
+    color: #176b2c;
+    background: #e7f5ea;
+    border: 1px solid #b9dfc2;
+}
+
+.sync-status-local {
+    color: #245a9a;
+    background: #e8f1fb;
+    border: 1px solid #bfd3eb;
+}
+
+.sync-status-dirty {
+    color: #9a5b00;
+    background: #fff2d9;
+    border: 1px solid #ead09a;
+}
+
+.sync-status-server {
+    color: #666;
+    background: #f1f1f1;
+    border: 1px solid #d0d0d0;
+}
